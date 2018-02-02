@@ -1,7 +1,8 @@
-
-for _, pm in ipairs( os.matchfiles( "projects/" .. fold .. "/*premake.lua" ) ) do
-	print( pm )
-	dofile( pm )
+for _, fold in ipairs(os.matchdirs("projects/*")) do
+	for _, pm in ipairs( os.matchfiles( fold .. "/*premake.lua" ) ) do
+		print( pm )
+		dofile( pm )
+	end
 end
 
 print("Begin fixup")
