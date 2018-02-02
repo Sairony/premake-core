@@ -46,6 +46,7 @@
 		"base/global.lua",
 		"base/workspace.lua",
 		"base/group.lua",
+		"base/importproject.lua",
 		"base/project.lua",
 		"base/config.lua",
 		"base/fileconfig.lua",

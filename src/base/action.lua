@@ -110,7 +110,7 @@
 
 			for prj in p.workspace.eachproject(wks) do
 				local onProject = a.onProject or a.onproject
-				if onProject and not prj.external then
+				if onProject and not prj.external and prj.parent == wks then
 					onProject(prj)
 				end
 			end

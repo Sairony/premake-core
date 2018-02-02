@@ -29,14 +29,15 @@
 	function project.new(name)
 		local prj = p.container.new(project, name)
 		prj.uuid = os.uuid(name)
-
+		prj.wkstogroup = {}
 		if p.api.scope.group then
-			prj.group = p.api.scope.group.name
+			prj.wkstogroup[p.api.scope.workspace] = p.api.scope.group
 		else
-			prj.group = ""
+			prj.wkstogroup[p.api.scope.workspace] = ""
 		end
 
 		return prj
+
 	end
 
 

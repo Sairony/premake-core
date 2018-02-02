@@ -89,6 +89,17 @@
 		-- terms describe the "operating environment"; only results contained by
 		-- configuration blocks which match these terms will be returned.
 
+		if self.importprojects then
+			for _, project in ipairs( self.importprojects ) do
+				local newProj = resolveProject( project );
+				newProj.wkstogroup[ self ] = project.group
+				self.projects[newProj.name] = newProj
+				table.insert( self.projects, newProj )
+			end
+		end
+
+		self.importprojects = {}
+
 		addCommonContextFilters(self)
 
 		-- Set up my token expansion environment
@@ -174,16 +185,18 @@
 
 
 		for prj in p.workspace.eachproject(wks) do
-			local files = table.shallowcopy(prj._.files)
-			for cfg in p.project.eachconfig(prj) do
-				table.foreachi(files, function(node)
-					addFile(cfg, node)
-				end)
-			end
+			if prj.parent == wks then
+				local files = table.shallowcopy(prj._.files)
+				for cfg in p.project.eachconfig(prj) do
+					table.foreachi(files, function(node)
+						addFile(cfg, node)
+					end)
+				end
 
-			-- generated files might screw up the object sequences.
-			if prj.hasGeneratedFiles and p.project.isnative(prj) then
-				oven.assignObjectSequences(prj)
+				-- generated files might screw up the object sequences.
+				if prj.hasGeneratedFiles and p.project.isnative(prj) then
+					oven.assignObjectSequences(prj)
+				end
 			end
 		end
 	end
@@ -374,14 +387,16 @@
 		local configs = {}
 
 		for prj in p.workspace.eachproject(wks) do
-			for cfg in p.project.eachconfig(prj) do
-				-- get the dirs for this config, and associate them together,
-				-- and increment a counter for each one discovered
-				local dirs = getobjdirs(cfg)
-				if dirs then
-					configs[cfg] = dirs
-					for _, dir in ipairs(dirs or {}) do
-						counts[dir] = (counts[dir] or 0) + 1
+			if prj.parent == wks then
+				for cfg in p.project.eachconfig(prj) do
+					-- get the dirs for this config, and associate them together,
+					-- and increment a counter for each one discovered
+					local dirs = getobjdirs(cfg)
+					if dirs then
+						configs[cfg] = dirs
+						for _, dir in ipairs(dirs or {}) do
+							counts[dir] = (counts[dir] or 0) + 1
+						end
 					end
 				end
 			end

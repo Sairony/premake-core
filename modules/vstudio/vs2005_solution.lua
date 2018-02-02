@@ -113,7 +113,7 @@
 
 				-- Build a relative path from the solution file to the project file
 				local prjpath = vstudio.projectfile(prj)
-				prjpath = vstudio.path(prj.workspace, prjpath)
+				prjpath = vstudio.path(wks, prjpath)
 
 				-- Unlike projects, solutions must use old-school %...% DOS style
 				-- for environment variables.

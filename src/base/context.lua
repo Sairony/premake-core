@@ -120,8 +120,11 @@
 
 	function context.copyFilters(ctx, src)
 		ctx.terms = {}
-		for k,v in pairs(src.terms) do
-			ctx.terms[k] = v
+		
+		if src.terms then
+			for k,v in pairs(src.terms) do
+				ctx.terms[k] = v
+			end
 		end
 	end
 

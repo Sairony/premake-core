@@ -117,7 +117,7 @@
 
 		local tr = p.tree.new()
 		for prj in workspace.eachproject(self) do
-			local prjpath = path.join(prj.group, prj.name)
+			local prjpath = path.join(prj.wkstogroup[self], prj.name)
 			local node = p.tree.add(tr, prjpath)
 			node.project = prj
 		end

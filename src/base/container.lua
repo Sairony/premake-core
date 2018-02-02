@@ -113,6 +113,7 @@
 
 
 
+	container.baked = {}
 ---
 -- Process the contents of a container, which were populated by the project
 -- script, in preparation for doing work on the results, such as exporting
@@ -121,7 +122,11 @@
 
 	function container.bake(self)
 		if self._isBaked then
-			return self
+			if container.baked[self] then
+				return container.baked[self]
+			else
+				return self
+			end
 		end
 		self._isBaked = true
 
@@ -146,7 +151,7 @@
 		if type(self.class.bake) == "function" then
 			self.class.bake(ctx)
 		end
-
+		container.baked[self] = ctx;
 		return ctx
 	end
 
